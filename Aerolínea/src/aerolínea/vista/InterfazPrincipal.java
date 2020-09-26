@@ -29,6 +29,7 @@ public class InterfazPrincipal extends JFrame  {
     //private MantenimientoClientes clientes;
     
     public  InterfazPrincipal(){
+        super("Interfaz Principal");
            init();
            /*
            aerolineas=new MantenimientoAerolineas();
