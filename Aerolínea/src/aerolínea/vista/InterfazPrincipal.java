@@ -23,7 +23,7 @@ public class InterfazPrincipal extends JFrame  {
     private JPanel principal;
     private JButton configuracionApp,mantenimientoClientes,mantenimientoVuelos,mantenimientoAerolineas;
     private JLabel mensaje;
-    //private MantenimientoAerolineas aerolineas;
+    private MantenimientoAerolinea aerolineas;
     //private MantenimientoVuelos vuelos;
     //private ConfiguracionAplicacion configuracion;
     //private MantenimientoClientes clientes;
@@ -31,9 +31,9 @@ public class InterfazPrincipal extends JFrame  {
     public  InterfazPrincipal(){
         super("Interfaz Principal");
            init();
-           /*
-           aerolineas=new MantenimientoAerolineas();
-           vuelos=new MantenimientoVuelos();
+           
+           aerolineas=new MantenimientoAerolinea();
+         /*  vuelos=new MantenimientoVuelos();
            configuracion=new ConfiguracionAplicacion();
            clientes=new MantenimientoClientes();
            */
@@ -95,7 +95,7 @@ public class InterfazPrincipal extends JFrame  {
         mantenimientoAerolineas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-               //aerolineas.setVisible();
+               aerolineas.setVisible(true);
             }
         });
                 
