@@ -6,8 +6,12 @@
 package aerolínea.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -37,12 +41,22 @@ public class InterfazPrincipal extends JFrame  {
            configuracion=new ConfiguracionAplicacion();
            clientes=new MantenimientoClientes();
            */
+        Font font = new Font("Agency FB", Font.BOLD, 24);
+        Font font1 = new Font("Agency FB", Font.BOLD, 34);
         principal=new JPanel();
         configuracionApp=new JButton("Configuración de la apicación");
         mantenimientoClientes=new JButton("Mantenimiento y administración de clientes");
         mantenimientoVuelos= new JButton("Mantenimiento y administración de vuelos");
         mantenimientoAerolineas=new JButton("Mantenimiento y administración de aerolineas");
         mensaje=new JLabel("Menu principal");
+        
+        configuracionApp.setFont(font);
+        mantenimientoClientes.setFont(font);
+        mantenimientoVuelos.setFont(font);
+        mantenimientoAerolineas.setFont(font);
+        mensaje.setFont(font1);
+        principal.setBackground(Color.orange);
+        
         this.setLayout(new BorderLayout());
      
         AgregarComponentes(this.getContentPane());
@@ -58,15 +72,40 @@ public class InterfazPrincipal extends JFrame  {
     
     public void AgregarComponentes(Container c){
         
-        principal.setLayout(new GridLayout(5,1,0,6));
-        principal.add(mensaje);
-        principal.add(configuracionApp);
-        principal.add(mantenimientoVuelos);
-        principal.add(mantenimientoAerolineas);
-        principal.add(mantenimientoClientes);
+        principal.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(20,20,20,20);
+        
+        constraints.gridx = 0;   // Primera columna
+        constraints.gridy = 0;   // Primera fila
+        constraints.weightx = 0.5;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.NORTH;
+        principal.add(mensaje, constraints);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridwidth = 0;
+        
+        
+        constraints.gridy = 1;   // Primera fila
+        constraints.weightx = 0.5;
+        constraints.fill = GridBagConstraints.BOTH;
+        principal.add(configuracionApp, constraints);
+        
+        constraints.gridy = 2;   // Segunda fila
+        constraints.fill = GridBagConstraints.BOTH;
+        principal.add(mantenimientoVuelos, constraints);
+        
+        constraints.gridy = 4;
+        constraints.fill = GridBagConstraints.BOTH;
+        principal.add(mantenimientoAerolineas, constraints);
+        
+        constraints.gridy = 5;
+        constraints.fill = GridBagConstraints.BOTH;
+        principal.add(mantenimientoClientes, constraints);
+        
         AgregarFuncionalidad();
-       // c.add(mensaje,BorderLayout.NORTH);
-        c.add(principal,BorderLayout.CENTER);
+        
+        c.add(principal, BorderLayout.CENTER);
         
     }
     

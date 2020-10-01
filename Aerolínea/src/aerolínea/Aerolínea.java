@@ -5,7 +5,7 @@
  */
 package aerolínea;
 
-import aerolínea.vista.InterfazPrincipal;
+import aerolínea.vista.VentanaLogin;
 
 /**
  *
@@ -17,8 +17,8 @@ public class Aerolínea {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        InterfazPrincipal inst=new InterfazPrincipal();
-        inst.setVisible(true);
+        VentanaLogin ven = new VentanaLogin();
+        ven.iniciar();
     }
     
 }
