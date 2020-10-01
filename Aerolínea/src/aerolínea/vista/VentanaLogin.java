@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author USER
+ * @author Pablo Lizano
  */
 public class VentanaLogin extends JFrame implements Observer {
     JLabel etiq1;

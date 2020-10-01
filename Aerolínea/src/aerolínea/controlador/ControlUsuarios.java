@@ -10,7 +10,7 @@ import java.util.Observer;
 
 /**
  *
- * @author USER
+ * @author Pablo Lizano
  */
 public class ControlUsuarios {
     private ModeloUsuarios data;

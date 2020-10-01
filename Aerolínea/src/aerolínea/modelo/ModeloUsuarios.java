@@ -10,7 +10,7 @@ import java.util.Observable;
 
 /**
  *
- * @author USER
+ * @author Pablo Lizano
  */
 public class ModeloUsuarios extends Observable {
     HashMap usuarios = new HashMap();
