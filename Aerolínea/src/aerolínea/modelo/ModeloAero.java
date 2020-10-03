@@ -13,11 +13,11 @@ import java.util.Observable;
  *
  * @author Gonzalo
  */
-public class ModeloAeroVuelo extends Observable {
-    public ModeloAeroVuelo(){
-        conjunto=new ArrayList<ModeloAeroVuelo>();
+public class ModeloAero extends Observable {
+    public ModeloAero(){
+        conjunto=new ArrayList<ModeloAero>();
     }
-    public ModeloAeroVuelo(String nom, Date fecha){
+    public ModeloAero(String nom, Date fecha){
         this.nombre=nom;
         this.fecha=fecha;
     }
@@ -25,22 +25,28 @@ public class ModeloAeroVuelo extends Observable {
     public Date getFecha() {
         return fecha;
     }
-    public void agregar(String nom,Date fecha){
+    public void agregar(String nom,Date fecha){//
         boolean estado=false;
         if(conjunto.isEmpty()){
-             aero= new ModeloAeroVuelo(nom,fecha);
+             aero= new ModeloAero(nom,fecha);
              conjunto.add(aero);
              this.setChanged();
              this.notifyObservers();
         }
         else{
-            aero= new ModeloAeroVuelo(nom,fecha);
-            if (!conjunto.contains(aero)){
+            aero= new ModeloAero(nom,fecha);
+            int tamanio=conjunto.size();
+            for(int i=0;i<conjunto.size();i++){
+            if(conjunto.get(i).getNombre()==nom){
+                estado=true;
+            }
+        }
+            if (!estado){
                 conjunto.add(aero);
                 this.setChanged(); 
                 this.notifyObservers();
             }
-            
+           
         }
         
     }
@@ -49,7 +55,7 @@ public class ModeloAeroVuelo extends Observable {
     public void modifi(String nom1, String nom2 ,Date fecha){
          for(int i=0;i<conjunto.size();i++){
             if(nom1==conjunto.get(i).getNombre()){
-                aero=new ModeloAeroVuelo(nom2,fecha);
+                aero=new ModeloAero(nom2,fecha);
                 conjunto.set(i, aero);
                 this.setChanged(); 
                 this.notifyObservers();
@@ -57,7 +63,7 @@ public class ModeloAeroVuelo extends Observable {
         }
     }
 
-    public ArrayList<ModeloAeroVuelo> getConjunto() {
+    public ArrayList<ModeloAero> getConjunto() {
         return conjunto;
     }
 
@@ -65,9 +71,9 @@ public class ModeloAeroVuelo extends Observable {
         return nombre;
     }
     
-    private ArrayList<ModeloAeroVuelo> conjunto;
+    private ArrayList<ModeloAero> conjunto;
     private String nombre;
     private Date fecha;
-    private ModeloAeroVuelo aero;
+    private ModeloAero aero;
     
 }

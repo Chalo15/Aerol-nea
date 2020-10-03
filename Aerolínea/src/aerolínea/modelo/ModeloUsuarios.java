@@ -32,6 +32,8 @@ public class ModeloUsuarios extends Observable {
         tipoUser.put("gonzaloumana", "1");
         usuarios.put("pablolizano", "754cuadra");
         tipoUser.put("pablolizano", "1");
+        usuarios.put("user", "user");
+        tipoUser.put("user", "0");
     }
     
     public void agregarUser(String nom, String con, String tipo){
@@ -45,13 +47,16 @@ public class ModeloUsuarios extends Observable {
         existevalue = usuarios.containsValue(contr);
         if(existekey == true && existevalue == true){
             acceso = true;
-            this.setChanged();   
-            this.notifyObservers(); 
+            
             String admin = tipoUser.get(nom).toString();
             if(admin == "1"){
                 type = true;               
             }
-            type = false;               
+            else{
+                type = false;  
+            }
+                    this.setChanged();   
+            this.notifyObservers();      
         }
         else{
             acceso = false;

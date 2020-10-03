@@ -5,7 +5,7 @@
  */
 package aerolínea.controlador;
 
-import aerolínea.modelo.ModeloAeroVuelo;
+import aerolínea.modelo.ModeloAero;
 import java.util.Date;
 import java.util.Observer;
 
@@ -14,10 +14,10 @@ import java.util.Observer;
  * @author Gonzalo
  */
 public class ControladorAeroVue {
-    private ModeloAeroVuelo modelo;
+    private ModeloAero modelo;
     
     public ControladorAeroVue(){
-        modelo=new ModeloAeroVuelo();
+        modelo=new ModeloAero();
     }
     public void agregarObservador(Observer vis){
         modelo.addObserver(vis);

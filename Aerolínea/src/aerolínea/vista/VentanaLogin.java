@@ -117,13 +117,21 @@ public class VentanaLogin extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         ModeloUsuarios m = (ModeloUsuarios)o;
-        boolean access = m.isAcceso();
-        boolean tipo = m.isType();
+      //  boolean access = m.isAcceso();
+       // boolean tipo = m.isType();
         
-        if(m.isAcceso() == true){            
-            InterfazPrincipal inst = new InterfazPrincipal();
+        if(m.isAcceso() == true){       
+            if(m.isType()){
+            InterfazPrincipal inst = new InterfazPrincipal(true);
             inst.setVisible(true);
             dispose();
+            }
+            else{
+             InterfazPrincipal inst = new InterfazPrincipal(false);
+             inst.setVisible(true);
+             dispose();
+            }
+            
         }
         else if(m.isAcceso() == false) {
             JOptionPane.showMessageDialog(null, "Datos Errones");

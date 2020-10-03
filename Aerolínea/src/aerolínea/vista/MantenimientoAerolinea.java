@@ -6,15 +6,23 @@
 package aerolínea.vista;
 
 import aerolínea.controlador.ControladorAeroVue;
-import aerolínea.modelo.ModeloAeroVuelo;
+import aerolínea.modelo.ModeloAero;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,26 +34,139 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
     /**
      * Creates new form MantenimientoAerolinea
      */
-    public MantenimientoAerolinea() {
-        initComponents();
+    public MantenimientoAerolinea(ControladorAeroVue cntrl) {
+      control=cntrl;
+       iniciador();
          this.setLocationRelativeTo(null);
          this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        control=new ControladorAeroVue();
+        
+        //la inicializacion y el llamado al agregar 
+    }
+
+    public ControladorAeroVue getControl() {
+        return control;
+    }
+public void iniciador(){
+    
+        jPanel1 = new JPanel();
+        jLabel1 = new JLabel();
+        info = new JTextField();
+        agregar = new JButton();
+        jScrollPane1 = new JScrollPane();
+        tabla = new JTable();
+        modificar = new JButton();
         dato=new String("");
-        fecha= new Date();
-        control.agregarObservador(this);
+         jLabel1.setText("Ingrese el nombre");
         tabla.addMouseListener(new MouseAdapter() {
             DefaultTableModel model=new DefaultTableModel();
            public void mouseClicked(MouseEvent e){
                int i= tabla.getSelectedRow();
-               dato=(tabla.getValueAt(i, 0).toString());
+               dato1=(tabla.getValueAt(i, 0).toString());
                dato2=(tabla.getValueAt(i, 1).toString()); 
            } 
             
            
         });
-    }
+       
+          agregar.setText("Agregar");
+          agregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               dato=info.getText();
+               if(dato.isEmpty()){
+                   JOptionPane.showMessageDialog(null,"Ingrese un nombre","Error", JOptionPane.WARNING_MESSAGE);
+               }
+                  else{
+                        fecha=new Date();
+                        control.accion(dato,fecha);
+                        info.setText("");
+               }
+            }
+        });
+          
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Nombre ", "Fecha última de modificacion"
+            }
+        ));
+        jScrollPane1.setViewportView(tabla);
+        
+        jScrollPane1.setViewportView(tabla);
 
+        modificar.setText("Modificar");
+        modificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String cambio=JOptionPane.showInputDialog("Introduzca el nuevo nombre");
+                fecha=new Date();
+                control.cambio(dato1, cambio, fecha);
+            }
+        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(agregar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(203, 203, 203)
+                .addComponent(modificar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agregar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(104, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        pack();
+        
+    
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,29 +286,29 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         
-        dato=info.getText();
+    /*    dato=info.getText();
         control.accion(dato,fecha);
-        info.setText("");
+        info.setText("");*/
     }//GEN-LAST:event_agregarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
       
-        
+       /* 
         String cambio=JOptionPane.showInputDialog("Introduzca el nuevo nombre");
-      control.cambio(dato, cambio, fecha);
+      control.cambio(dato, cambio, fecha);*/
         
     }//GEN-LAST:event_modificarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    //public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+    /*    try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -202,16 +323,16 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
             java.util.logging.Logger.getLogger(MantenimientoAerolinea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MantenimientoAerolinea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        }*/
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MantenimientoAerolinea().setVisible(true);
-            }
-        });
-    }
+   //     java.awt.EventQueue.invokeLater(new Runnable() {
+      //    public void run() {
+       //         new MantenimientoAerolinea().setVisible(true);
+      //      }
+       // });
+   // }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
@@ -223,13 +344,13 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
     private ControladorAeroVue control;
-    private String dato,dato2;
+    private String dato,dato1,dato2;
     private Date fecha;
     @Override
     public void update(Observable o, Object o1) {
-       ModeloAeroVuelo m = (ModeloAeroVuelo)o;
+       ModeloAero m = (ModeloAero)o;
        String mat [][]=new String [m.getConjunto().size()][2];
-         ArrayList<ModeloAeroVuelo> temp=m.getConjunto();
+         ArrayList<ModeloAero> temp=m.getConjunto();
        for(int i=0; i<m.getConjunto().size();i++){
           mat[i][0]=temp.get(i).getNombre();
           dato= String.valueOf(temp.get(i).getFecha());
