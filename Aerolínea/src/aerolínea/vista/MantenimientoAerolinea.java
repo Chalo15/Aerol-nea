@@ -6,7 +6,10 @@
 package aerolínea.vista;
 
 import aerolínea.controlador.ControladorAeroVue;
+import aerolínea.modelo.Aerolinea;
 import aerolínea.modelo.ModeloAero;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -47,7 +50,8 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
         return control;
     }
 public void iniciador(){
-    
+        Font font = new Font("Agency FB", Font.BOLD, 20);
+        Font font1 = new Font("Agency FB", Font.BOLD, 20);
         jPanel1 = new JPanel();
         jLabel1 = new JLabel();
         info = new JTextField();
@@ -57,6 +61,9 @@ public void iniciador(){
         modificar = new JButton();
         dato=new String("");
          jLabel1.setText("Ingrese el nombre");
+         agregar.setFont(font);
+         modificar.setFont(font);
+         jLabel1.setFont(font1);
         tabla.addMouseListener(new MouseAdapter() {
             DefaultTableModel model=new DefaultTableModel();
            public void mouseClicked(MouseEvent e){
@@ -64,6 +71,7 @@ public void iniciador(){
                dato1=(tabla.getValueAt(i, 0).toString());
                dato2=(tabla.getValueAt(i, 1).toString()); 
            } 
+         
             
            
         });
@@ -78,7 +86,8 @@ public void iniciador(){
                }
                   else{
                         fecha=new Date();
-                        control.accion(dato,fecha);
+                        aero=new Aerolinea(dato,fecha);
+                        control.accionAero(aero);
                         info.setText("");
                }
             }
@@ -108,9 +117,13 @@ public void iniciador(){
             public void actionPerformed(ActionEvent ae) {
                 String cambio=JOptionPane.showInputDialog("Introduzca el nuevo nombre");
                 fecha=new Date();
-                control.cambio(dato1, cambio, fecha);
+                aero=new Aerolinea(cambio,fecha);
+                control.cambio(dato1,aero);
+                //control.cambio(dato1, cambio, fecha);
             }
         });
+              
+        //jPanel1.setBackground(Color.orange);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -346,12 +359,15 @@ public void iniciador(){
     private ControladorAeroVue control;
     private String dato,dato1,dato2;
     private Date fecha;
+    private Aerolinea aero;
     @Override
     public void update(Observable o, Object o1) {
        ModeloAero m = (ModeloAero)o;
        String mat [][]=new String [m.getConjunto().size()][2];
-         ArrayList<ModeloAero> temp=m.getConjunto();
-       for(int i=0; i<m.getConjunto().size();i++){
+       ArrayList<Aerolinea> temp=m.getConjunto();
+        
+       
+       for(int i=0; i<m.getConjunto().size();i++){ 
           mat[i][0]=temp.get(i).getNombre();
           dato= String.valueOf(temp.get(i).getFecha());
           mat[i][1]=dato;

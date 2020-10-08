@@ -5,7 +5,9 @@
  */
 package aerolínea.controlador;
 
+import aerolínea.modelo.Aerolinea;
 import aerolínea.modelo.ModeloAero;
+import aerolínea.modelo.Vuelo;
 import java.util.Date;
 import java.util.Observer;
 
@@ -22,12 +24,20 @@ public class ControladorAeroVue {
     public void agregarObservador(Observer vis){
         modelo.addObserver(vis);
     }
-    public void accion(String nom,Date fecha){
+    public void accionAero(Aerolinea aero){
        
-            modelo.agregar(nom,fecha);
+            modelo.agregar(aero);
         
     }
-    public void cambio(String nombre1, String nombre2,Date fecha){
-        modelo.modifi(nombre1,nombre2,fecha);
+    public void accionVue(Vuelo vue){
+       
+            modelo.agregar(vue);
+        
+    }
+    public void cambio(String nombre1, Aerolinea aero){
+        modelo.modifi(nombre1,aero);
+    }
+    public void eliminarVue(String num){
+        modelo.eliminarVue(num);
     }
 }

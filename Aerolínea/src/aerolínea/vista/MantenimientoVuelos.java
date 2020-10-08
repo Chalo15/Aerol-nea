@@ -6,7 +6,9 @@
 package aerolínea.vista;
 
 import aerolínea.controlador.ControladorAeroVue;
+import aerolínea.modelo.Aerolinea;
 import aerolínea.modelo.ModeloAero;
+import aerolínea.modelo.Vuelo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -15,7 +17,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.DefaultListModel;
@@ -23,10 +32,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,8 +49,7 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         super("Mantenimiento y administracion de vuelos");
         iniciadorComponentes();
         controlador=cntrl;
-        //controlador.agregarObservador(this);
-        this.setSize(900,900);
+        this.setSize(1500,900);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(true);
@@ -48,13 +59,17 @@ public class MantenimientoVuelos extends JFrame implements Observer{
     }
     public void iniciadorComponentes(){
         //panel superior ///////////////////////////////////////////////////////////////////////////
+       // nombre= new String("");
+        //vect[]=new String [];
+        
         Font font = new Font("Agency FB", Font.BOLD, 20);
         Font font1 = new Font("Agency FB", Font.BOLD, 20);
         superior=new JPanel();
         inferior=new JPanel();
         superior.setLayout(new GridBagLayout());
         superior.setBackground(Color.orange);
-        inferior.setLayout(new FlowLayout());
+        inferior.setLayout(new GridBagLayout());
+        
         inferior.setBackground(Color.orange);
         modelo=new DefaultListModel();
         agregar=new JButton("Agregar");
@@ -87,29 +102,64 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         horSalida.setFont(font1);
         horLLegada.setFont(font1);
         cantAsientos.setFont(font1);
-        tabla=new JTable();
-        /* tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Nombre ", "Fecha última de modificacion"
-            }
-        ));*/
-        //jScrollPane1.setViewportView(tabla);
         
-       // jScrollPane1.setViewportView(tabla);
-        lista=new JList();
+        lista=new JList(modelo);
         lista.setVisibleRowCount(5);//sean visible 5
         lista.setFixedCellWidth(100);//alto y ancho
         lista.setFixedCellHeight(15);
        
+        //inferior///////////////////////////////////////////////////////////////////////////////////
+        tabla=new JTable();
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},             
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                {null, null,null,null,null,null,null,null,null,null},
+                
+                
+                
+            },
+            new String [] {
+                "Aeroínea", "Numero de vuelo ","Lugar de salida","Lugar de llegada", "Fecha de salida","Fecha de llegada","Hora de salida","Hora de llegada","# asientos","Fecha última de modificación"
+            }
+        ));
+        
+        
+        
+        tabla.addMouseListener(new MouseAdapter() {
+           DefaultTableModel model=new DefaultTableModel();
+           public void mouseCliked(MouseEvent e){
+               int i=tabla.getSelectedRow();
+                dato0=tabla.getValueAt(i, 0).toString();
+                dato1=tabla.getValueAt(i, 1).toString();
+                dato2=tabla.getValueAt(i, 2).toString();
+                dato3=tabla.getValueAt(i, 3).toString();
+                dato4=tabla.getValueAt(i, 4).toString();
+                dato5=tabla.getValueAt(i, 5).toString();
+                dato6=tabla.getValueAt(i, 6).toString();
+                dato7=tabla.getValueAt(i, 7).toString();
+                dato8=tabla.getValueAt(i, 8).toString();
+                dato9=tabla.getValueAt(i, 9).toString();
+           }
+
+        });
+        
+           
         
     }
     public void agregarComponentes(Container e){
@@ -203,14 +253,68 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         ubicacion.anchor=GridBagConstraints.WEST;
         superior.add(eliminar,ubicacion);
         
-        e.add(superior,BorderLayout.NORTH);
+        split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,superior,inferior);
+        split.setOneTouchExpandable(true);
+       
+         
         ////////////////////////////////////////iferior
         
+        ubicacion.insets=new Insets(30,30,150,30);
         
+        ubicacion.gridx=0;
+        ubicacion.gridy=0;
+        inferior.add(new JScrollPane(tabla),ubicacion);
+     agregarFuncionalidad();
+        e.add(split,BorderLayout.CENTER);
     }
     public void list(String m){
       
         
+    }
+    
+    public void agregarFuncionalidad(){
+        agregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String aerolinea,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant;
+                aerolinea=String.valueOf(lista.getSelectedValue()); 
+                numvue=numvuelo.getText();
+                lugsali=lugsalida.getText();
+                lugllega=lugllegada.getText();
+                fsali=fsalida.getText();
+                fllega=fllegada.getText();
+                hsali=hsalida.getText();
+                hllega=hllegada.getText();
+                cant=cantas.getText();
+                if( numvue.isEmpty()||lugsali.isEmpty()||lugllega.isEmpty()||fsali.isEmpty()||fllega.isEmpty()||hsali.isEmpty()||hllega.isEmpty()||cant.isEmpty()){
+                   JOptionPane.showMessageDialog(null,"Ingrese todos los datos requeridos","Error", JOptionPane.WARNING_MESSAGE);
+               }
+                else{
+                    fecha=new Date();
+                    objvuelo=new Vuelo(aerolinea,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant,fecha);
+                    controlador.accionVue(objvuelo);
+                }
+                numvuelo.setText("");
+                lugsalida.setText("");
+                lugllegada.setText("");
+                fsalida.setText("");
+                fllegada.setText("");
+                hsalida.setText("");
+                hllegada.setText("");
+                cantas.setText("");
+            }
+        });
+        
+        eliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                
+                
+                controlador.eliminarVue(dato1);
+                
+                
+            }
+        });
     }
     
     private JPanel superior,inferior;
@@ -221,27 +325,54 @@ public class MantenimientoVuelos extends JFrame implements Observer{
     private ControladorAeroVue controlador;
     private DefaultListModel modelo;
     private JTable tabla;
-    private javax.swing.JScrollPane jScrollPane1;
+    private JSplitPane split;
+    private Vuelo objvuelo;
+    private Date fecha;
+    private String dato0,dato1,dato2,dato3,dato4,dato5,dato6,dato7,dato8,dato9;
 
     @Override
     public void update(Observable o, Object o1) {
         ModeloAero model = (ModeloAero)o;
-         String vect[]=new String [model.getConjunto().size()];
-         ArrayList<ModeloAero> temp=model.getConjunto();
-         
-         /*for(int i=0;i<model.getConjunto().size();i++){
-               String nombre=temp.get(i).getNombre();
-             System.out.println(nombre);
-             System.out.println("");
+        
+        //actualizar lista con aerolineas existentes
+         ArrayList<String> nombres=new ArrayList<String>();
+         ArrayList<Aerolinea> temp=model.getConjunto();
+        modelo.clear();
+         int ent=0;
+          for(Aerolinea i: temp){
+           nombres.add(i.getNombre());
+           modelo.add(ent,i.getNombre());
+             //modelo.addElement(nombres);
+             ent++;
+       }
           
-             vect[i]=nombre;
-            //model.get
-         }*/
-       //  for(int i=0;i<model.getConjunto().size();i++){
-             modelo.addElement(temp);
-             lista.setModel(modelo);
-        // }
-         //modelo.addElement(vect);
+          //Actualziar tabla con vuelos creados
+          String mat[][]=new String[model.getVuelos().size()][10];
+           ArrayList<Vuelo> tempvue=model.getVuelos();
+           
+           for(int i=0;i<model.getVuelos().size();i++){
+               mat[i][0]=tempvue.get(i).getAerolinea();
+               mat[i][1]=tempvue.get(i).getNumerovuelo();
+               mat[i][2]=tempvue.get(i).getLugarsalida();
+               mat[i][3]=tempvue.get(i).getLugarllegada();
+               mat[i][4]=tempvue.get(i).getFechasalida();
+               mat[i][5]=tempvue.get(i).getFechallegada();
+               mat[i][6]=tempvue.get(i).getHorasalida();
+               mat[i][7]=tempvue.get(i).getHorallegada();
+               mat[i][8]=tempvue.get(i).getCantidadasientos();
+               mat[i][9]=String.valueOf(tempvue.get(i).getFecha());
+               
+               
+           }
+           tabla.setModel(new javax.swing.table.DefaultTableModel(
+                        mat
+                   ,
+            new String [] {
+               "Aeroínea", "Numero de vuelo ","Lugar de salida","Lugar de llegada", "Fecha de salida","Fecha de llegada","Hora de salida","Hora de llegada","# asientos","Fecha última de modificación"
+            }
+        ));
+        // lista.setModel(modelo);
+
        
     }
 }
