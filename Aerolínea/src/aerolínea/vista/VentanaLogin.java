@@ -16,13 +16,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -33,14 +37,15 @@ public class VentanaLogin extends JFrame implements Observer {
     JLabel etiq1;
     JLabel etiq2;
     JTextField campo1;
-    JTextField campo2;
+    JPasswordField campo2;
     JButton login;
+    JCheckBox checkbox = new JCheckBox("Ver contraseña");
     ControlUsuarios gestor;
     
     public VentanaLogin(){
         gestor = new ControlUsuarios();
         gestor.agregarObservador(this);
-        this.setSize(550,300);
+        this.setSize(600,400);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
@@ -49,7 +54,7 @@ public class VentanaLogin extends JFrame implements Observer {
         etiq2 = new JLabel("Contraseña:");
         campo1 = new JTextField("");
         campo1.setSize(10, 10);
-        campo2 = new JTextField("");
+        campo2 = new JPasswordField("");
         login = new JButton("Ingresar");
         
         this.getContentPane().setLayout(new GridBagLayout());
@@ -61,6 +66,7 @@ public class VentanaLogin extends JFrame implements Observer {
     public void agregarComponentes(Container c){
         Font font = new Font("Agency FB", Font.BOLD, 30);
         Font font2 = new Font("Agency FB", Font.PLAIN, 30);
+        Font font3 = new Font("Arial", Font.PLAIN, 20);
         
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(20, 20, 20, 20);
@@ -91,6 +97,13 @@ public class VentanaLogin extends JFrame implements Observer {
         campo2.setFont(font2);
         c.add(campo2, constraints);
         
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        checkbox.setFont(font3);
+        c.add(checkbox, constraints);
+        constraints.anchor = GridBagConstraints.CENTER;
+        
         c.add(new Box.Filler(
                 new Dimension(0, 0),
                 new Dimension(0, 0),
@@ -112,6 +125,12 @@ public class VentanaLogin extends JFrame implements Observer {
             }          
         });
         
+        checkbox.addItemListener(new ItemListener() {    
+             public void itemStateChanged(ItemEvent e) { 
+                  String contra = campo2.getText();
+                  JOptionPane.showMessageDialog(null, "Has introducido: " + contra);
+             }    
+        });  
     }  
 
     @Override

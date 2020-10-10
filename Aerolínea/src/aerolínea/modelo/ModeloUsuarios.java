@@ -25,7 +25,14 @@ public class ModeloUsuarios extends Observable {
     public boolean isType() {
         return type;
     }
-    
+
+    public HashMap getUsuarios() {
+        return usuarios;
+    }
+
+    public HashMap getTipoUser() {
+        return tipoUser;
+    }   
     
     public ModeloUsuarios(){
         usuarios.put("gonzaloumana", "123gonza");
@@ -39,7 +46,9 @@ public class ModeloUsuarios extends Observable {
     public void agregarUser(String nom, String con, String tipo){
         if(!usuarios.containsKey(nom)){
             usuarios.put(nom, con);
-            tipoUser.put(nom, tipo); 
+            tipoUser.put(nom, tipo);
+            this.setChanged(); 
+            this.notifyObservers();
         }
     }
     public void ValidarUser(String nom, String contr){ 
@@ -64,5 +73,11 @@ public class ModeloUsuarios extends Observable {
             this.setChanged();   
             this.notifyObservers(); 
         }
-    }     
+    }
+    public void eliminarUser(String nom){
+        usuarios.remove(nom);
+        tipoUser.remove(nom);
+        this.setChanged(); 
+        this.notifyObservers();
+    }
 }

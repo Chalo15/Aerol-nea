@@ -31,7 +31,7 @@ public class InterfazPrincipal extends JFrame  {
     private JLabel mensaje;
     private MantenimientoAerolinea aerolineas;
     private MantenimientoVuelos vuelos;
-    //private ConfiguracionAplicacion configuracion;
+    private ConfigApp configuracion;
     //private MantenimientoClientes clientes;
     private boolean estado;
     
@@ -44,8 +44,8 @@ public class InterfazPrincipal extends JFrame  {
            control=new ControladorAeroVue();
            aerolineas=new MantenimientoAerolinea(control);
            vuelos=new MantenimientoVuelos(control);
-           /*configuracion=new ConfiguracionAplicacion();
-           clientes=new MantenimientoClientes();
+           configuracion=new ConfigApp();
+           /*clientes=new MantenimientoClientes();
            */
            control.agregarObservador(aerolineas);
            control.agregarObservador(vuelos);
@@ -122,6 +122,12 @@ public class InterfazPrincipal extends JFrame  {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //configuracion.setVisible();
+                 if(estado){
+                     configuracion.setVisible(true);                 
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "No posee permisos de administrador");
+                }
             }
         });
                 
