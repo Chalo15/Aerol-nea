@@ -5,9 +5,9 @@
  */
 package aerolínea.vista;
 
-import aerolínea.controlador.ControladorAeroVue;
+import aerolínea.controlador.ControladorAeroVueClie;
 import aerolínea.modelo.Aerolinea;
-import aerolínea.modelo.ModeloAero;
+import aerolínea.modelo.Arreglos;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,16 +37,16 @@ public class MantenimientoAerolinea extends javax.swing.JFrame implements Observ
     /**
      * Creates new form MantenimientoAerolinea
      */
-    public MantenimientoAerolinea(ControladorAeroVue cntrl) {
+    public MantenimientoAerolinea(ControladorAeroVueClie cntrl) {
       control=cntrl;
        iniciador();
          this.setLocationRelativeTo(null);
          this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+         this.setResizable(false);
         //la inicializacion y el llamado al agregar 
     }
 
-    public ControladorAeroVue getControl() {
+    public ControladorAeroVueClie getControl() {
         return control;
     }
 public void iniciador(){
@@ -86,8 +86,7 @@ public void iniciador(){
                }
                   else{
                         fecha=new Date();
-                        aero=new Aerolinea(dato,fecha);
-                        control.accionAero(aero);
+                        control.accionAero(dato,fecha);
                         info.setText("");
                }
             }
@@ -117,9 +116,8 @@ public void iniciador(){
             public void actionPerformed(ActionEvent ae) {
                 String cambio=JOptionPane.showInputDialog("Introduzca el nuevo nombre");
                 fecha=new Date();
-                aero=new Aerolinea(cambio,fecha);
-                control.cambio(dato1,aero);
-                //control.cambio(dato1, cambio, fecha);
+                control.cambio(dato1,cambio,fecha);
+                
             }
         });
               
@@ -356,13 +354,13 @@ public void iniciador(){
     private javax.swing.JButton modificar;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
-    private ControladorAeroVue control;
+    private ControladorAeroVueClie control;
     private String dato,dato1,dato2;
     private Date fecha;
     private Aerolinea aero;
     @Override
     public void update(Observable o, Object o1) {
-       ModeloAero m = (ModeloAero)o;
+       Arreglos m = (Arreglos)o;
        String mat [][]=new String [m.getConjunto().size()][2];
        ArrayList<Aerolinea> temp=m.getConjunto();
         

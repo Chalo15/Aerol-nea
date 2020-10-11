@@ -58,7 +58,7 @@ public class ConfigApp extends JFrame implements Observer {
         super("Configuracion Aplicacion");
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(true);
         
         control = new ControladorApp();
@@ -71,7 +71,7 @@ public class ConfigApp extends JFrame implements Observer {
         agregar = new JButton("Agregar");
         eliminar = new JButton("Eliminar");
         admin = new JCheckBox("Administrador");
-        clien = new JCheckBox("Cliente");
+        clien = new JCheckBox("Plataforma");
         tabla = new JTable(filas, nameColums);
         
         this.getContentPane().setLayout(new BorderLayout());

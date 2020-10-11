@@ -14,16 +14,15 @@ import javax.swing.JOptionPane;
  *
  * @author Gonzalo
  */
-public class ModeloAero extends Observable {
-    public ModeloAero(){
+public class Arreglos extends Observable {
+    public Arreglos(){
         conjunto=new ArrayList<Aerolinea>();
         vuelos=new ArrayList<Vuelo>();
+        clientes=new ArrayList<Cliente>();
     }
     
 
-    public Date getFecha() {
-        return fecha;
-    }
+    
     public void agregar(Vuelo vue){
         boolean estado=false;
         if(vuelos.isEmpty()){
@@ -46,6 +45,36 @@ public class ModeloAero extends Observable {
                  this.notifyObservers();
             }
         }
+    }
+    
+    public void agregar(Cliente cli){
+         boolean estado=false;
+        if(clientes.isEmpty()){
+             clientes.add(cli);
+             this.setChanged();
+             this.notifyObservers();
+        }
+        else{
+            
+            for(int i=0;i<conjunto.size();i++){              
+               if(clientes.get(i).getCedula().equals(cli.getCedula())){
+                estado=true;
+                clientes.get(i).setCantidad(cli.getCantidad());
+                JOptionPane.showMessageDialog(null,"Cliente actualizado","Actualización", JOptionPane.INFORMATION_MESSAGE);
+                this.setChanged(); 
+                this.notifyObservers();
+                return;
+            }
+        }
+            if (!estado){
+                clientes.add(cli);
+                this.setChanged(); 
+                this.notifyObservers();
+            }
+           
+        }
+        
+        
     }
     public void agregar(Aerolinea aero){
         boolean estado=false;
@@ -84,6 +113,48 @@ public class ModeloAero extends Observable {
             }
         }
     }
+    public void modifiVue(String num, Vuelo vue){
+         for(int i=0;i<vuelos.size();i++){
+            if(num==vuelos.get(i).getNumerovuelo()){
+                vuelos.set(i, vue);
+                this.setChanged(); 
+                this.notifyObservers();
+            }
+        }
+    }
+    
+    public void eliminarVue(String num){
+        for(int i=0;i<vuelos.size();i++){
+            if(num==vuelos.get(i).getNumerovuelo()){
+                vuelos.remove(i);
+                this.setChanged(); 
+                this.notifyObservers();
+            }
+        }
+    }
+    
+    public Boolean busquedaClie(String nom, String id){
+        boolean estado=false;
+        for(int i=0;i<clientes.size();i++){
+        if(clientes.get(i).getNombre().equals(nom)||clientes.get(i).getCedula().equals(id)){
+            estado=true;
+            return true;
+        }
+        else{
+            estado=false;
+            return false;
+        }
+        }
+        return estado;
+    }
+
+    public ArrayList<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(ArrayList<Cliente> clientes) {
+        this.clientes = clientes;
+    }
 
     public ArrayList<Vuelo> getVuelos() {
         return vuelos;
@@ -96,25 +167,20 @@ public class ModeloAero extends Observable {
     public ArrayList<Aerolinea> getConjunto() {
         return conjunto;
     }
+    public Date getFecha() {
+        return fecha;
+    }
 
     public String getNombre() {
         return nombre;
     }
-    public void eliminarVue(String num){
-        for(int i=0;i<vuelos.size();i++){
-            if(num.equals(vuelos.get(i).getNumerovuelo())){
-               // vuelos.remove(i);
-                vuelos.remove(vuelos.get(i));
-                this.setChanged(); 
-                this.notifyObservers();
-            }
-        }
-    }
+    
     
     private ArrayList<Aerolinea> conjunto;
     private ArrayList<Vuelo> vuelos;
+    private ArrayList<Cliente> clientes;
     private String nombre;
     private Date fecha;
-   // private ModeloAero aero;
+   
     
 }

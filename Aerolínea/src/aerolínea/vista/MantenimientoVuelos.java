@@ -5,9 +5,9 @@
  */
 package aerolínea.vista;
 
-import aerolínea.controlador.ControladorAeroVue;
+import aerolínea.controlador.ControladorAeroVueClie;
 import aerolínea.modelo.Aerolinea;
-import aerolínea.modelo.ModeloAero;
+import aerolínea.modelo.Arreglos;
 import aerolínea.modelo.Vuelo;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,7 +45,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Gonzalo
  */
 public class MantenimientoVuelos extends JFrame implements Observer{
-    public MantenimientoVuelos(ControladorAeroVue cntrl){
+    public MantenimientoVuelos(ControladorAeroVueClie cntrl){
         super("Mantenimiento y administracion de vuelos");
         iniciadorComponentes();
         controlador=cntrl;
@@ -64,12 +64,12 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         
         Font font = new Font("Agency FB", Font.BOLD, 20);
         Font font1 = new Font("Agency FB", Font.BOLD, 20);
+        modo=new ModofiVue();
         superior=new JPanel();
         inferior=new JPanel();
         superior.setLayout(new GridBagLayout());
         superior.setBackground(Color.orange);
         inferior.setLayout(new GridBagLayout());
-        
         inferior.setBackground(Color.orange);
         modelo=new DefaultListModel();
         agregar=new JButton("Agregar");
@@ -237,9 +237,9 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         ubicacion.fill=GridBagConstraints.BOTH;
         superior.add(cantas,ubicacion);
         
-        ubicacion.gridy=6;
+        /*ubicacion.gridy=6;
         ubicacion.anchor=GridBagConstraints.WEST;
-        superior.add(modificar,ubicacion);
+        superior.add(modificar,ubicacion);*/
         
         ubicacion.gridx=3;
         ubicacion.gridy=3;
@@ -257,7 +257,7 @@ public class MantenimientoVuelos extends JFrame implements Observer{
         split.setOneTouchExpandable(true);
        
          
-        ////////////////////////////////////////iferior
+        ////////////////////////////////////////inferior
         
         ubicacion.insets=new Insets(30,30,150,30);
         
@@ -286,35 +286,75 @@ public class MantenimientoVuelos extends JFrame implements Observer{
                 hsali=hsalida.getText();
                 hllega=hllegada.getText();
                 cant=cantas.getText();
-                if( numvue.isEmpty()||lugsali.isEmpty()||lugllega.isEmpty()||fsali.isEmpty()||fllega.isEmpty()||hsali.isEmpty()||hllega.isEmpty()||cant.isEmpty()){
+                
+                   
+                if( aerolinea.isEmpty()||numvue.isEmpty()||lugsali.isEmpty()||lugllega.isEmpty()||fsali.isEmpty()||fllega.isEmpty()||hsali.isEmpty()||hllega.isEmpty()||cant.isEmpty()){
                    JOptionPane.showMessageDialog(null,"Ingrese todos los datos requeridos","Error", JOptionPane.WARNING_MESSAGE);
                }
+                
+                    
                 else{
+                    try{
+                     int prueba=Integer.parseInt(numvue);
+                     prueba=Integer.parseInt(hsali);
+                     prueba=Integer.parseInt(hllega);
+                     prueba=Integer.parseInt(cant);
+                    
                     fecha=new Date();
-                    objvuelo=new Vuelo(aerolinea,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant,fecha);
-                    controlador.accionVue(objvuelo);
+                   // objvuelo=new Vuelo(aerolinea,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant,fecha);
+                    controlador.accionVue(aerolinea,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant,fecha);
+                    numvuelo.setText("");
+                    lugsalida.setText("");
+                    lugllegada.setText("");
+                    fsalida.setText("");
+                    fllegada.setText("");
+                    hsalida.setText("");
+                    hllegada.setText("");
+                    cantas.setText("");
+                    }
+                     catch(Exception e){
+                    JOptionPane.showMessageDialog(null,"Debe de ingreassr un valor numerico en numero de vuelo, hora de salida, hora de llegada y en cantidad asientos","Error", JOptionPane.ERROR_MESSAGE);
                 }
-                numvuelo.setText("");
-                lugsalida.setText("");
-                lugllegada.setText("");
-                fsalida.setText("");
-                fllegada.setText("");
-                hsalida.setText("");
-                hllegada.setText("");
-                cantas.setText("");
+                }
+                
+               
+                
             }
         });
         
         eliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
-                
-                controlador.eliminarVue(dato1);
+                int i=tabla.getSelectedRow();
+                if(i==-1){
+                    JOptionPane.showMessageDialog(null, "Debe marcar una fila primero");
+                }
+                else{
+                    dato1=tabla.getValueAt(i, 1).toString();  
+                    controlador.eliminarVue(dato1);                }
+               
                 
                 
             }
         });
+        
+       /* modificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+             modo.setVisible(true);
+                
+                 fecha=new Date();
+                 String numvue=modo.getVuelo().getNumvue(),
+                         lugsali=modo.getVuelo().getLugsali(),
+                         lugllega=modo.getVuelo().getLugllega(),
+                         fsali=modo.getVuelo().getFsali(),
+                         fllega=modo.getVuelo().getFllega(),
+                         hsali=modo.getVuelo().getHsali(),
+                         hllega=modo.getVuelo().getHllega(),
+                         cant=modo.getVuelo().getCant();
+                controlador.modifiVue(dato1,dato0,numvue,lugsali,lugllega,fsali,fllega,hsali,hllega,cant,fecha);//numero de vuelo selecionado, info de la otra ventana por medio de get
+            }
+        });*/
     }
     
     private JPanel superior,inferior;
@@ -322,17 +362,17 @@ public class MantenimientoVuelos extends JFrame implements Observer{
     private JTextField numvuelo,lugsalida,lugllegada,fsalida,fllegada,hsalida,hllegada,cantas;
     private JLabel  numeroVue, salida,llegada,fechSalida,fechLlegada,horSalida,horLLegada,cantAsientos;
     private JList lista;
-    private ControladorAeroVue controlador;
+    private ControladorAeroVueClie controlador;
     private DefaultListModel modelo;
     private JTable tabla;
     private JSplitPane split;
-    private Vuelo objvuelo;
     private Date fecha;
+    private ModofiVue modo;
     private String dato0,dato1,dato2,dato3,dato4,dato5,dato6,dato7,dato8,dato9;
 
     @Override
     public void update(Observable o, Object o1) {
-        ModeloAero model = (ModeloAero)o;
+        Arreglos model = (Arreglos)o;
         
         //actualizar lista con aerolineas existentes
          ArrayList<String> nombres=new ArrayList<String>();

@@ -5,7 +5,7 @@
  */
 package aerolínea.vista;
 
-import aerolínea.controlador.ControladorAeroVue;
+import aerolínea.controlador.ControladorAeroVueClie;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -32,23 +32,23 @@ public class InterfazPrincipal extends JFrame  {
     private MantenimientoAerolinea aerolineas;
     private MantenimientoVuelos vuelos;
     private ConfigApp configuracion;
-    //private MantenimientoClientes clientes;
+    private MantenimientoClientes clientes;
     private boolean estado;
     
-    private ControladorAeroVue control;
+    private ControladorAeroVueClie control;
     
     public  InterfazPrincipal(boolean est){
         super("Interfaz Principal");
            init();
            this.estado=est;
-           control=new ControladorAeroVue();
+           control=new ControladorAeroVueClie();
            aerolineas=new MantenimientoAerolinea(control);
            vuelos=new MantenimientoVuelos(control);
            configuracion=new ConfigApp();
-           /*clientes=new MantenimientoClientes();
-           */
+           clientes=new MantenimientoClientes(control);
            control.agregarObservador(aerolineas);
            control.agregarObservador(vuelos);
+           control.agregarObservador(clientes);
         Font font = new Font("Agency FB", Font.BOLD, 24);
         Font font1 = new Font("Agency FB", Font.BOLD, 34);
         principal=new JPanel();
@@ -134,7 +134,7 @@ public class InterfazPrincipal extends JFrame  {
         mantenimientoClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //clientes.setVisible();
+                clientes.setVisible(true);
             }
         });
                
